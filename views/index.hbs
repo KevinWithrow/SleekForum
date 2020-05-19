@@ -4,18 +4,32 @@
     <meta charset="UTF-8">
     <title>SleekForum</title>
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   </head>
   </head>
   <body>
-      <div class="container is-fluid">
-      <h1>SleekForum</h1>
-      <ul>
-          <li>feed</li>
-          <li>profile</li>
-          <li>settings</li>
-      </ul>
+      <div>
+          <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand" href="#">
+              <div id="nav-header">
+                <img src="kidaha-07.svg" alt="sleekmonster" id="sleekmonster">
+                SleekForum
+              </div>
+              <ul id="navbar" class="nav nav-tabs">
+                <li class="nav-item">
+                <a class="nav-link active" href="#">feed!</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">profile!</a>
+                </li>
+              </ul>
+            </a>
+              <form class="form-inline my-2 my-lg-0">
+                  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Search</button>
+              </form>
+          </nav>
       </div>
   </body>
 </html>
