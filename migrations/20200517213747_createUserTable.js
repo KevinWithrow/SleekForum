@@ -1,6 +1,6 @@
 
-const createPostTable = `
-create table post (
+const createUserTable = `
+create table "user" (
     id serial primary key,
     uuid text unique,
     "name" text unique,
@@ -10,11 +10,10 @@ create table post (
 
 
 
-
 exports.up = function(knex) {
-  return knex.raw(createPostTable)
+  return knex.raw(createUserTable)
 };
 
 exports.down = function(knex) {
- 
+
 };
