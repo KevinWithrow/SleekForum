@@ -1,0 +1,16 @@
+#navbar {
+    display: flex;
+}
+#navbar > * {
+    display: flex;
+}
+.nav-link {
+    color: red !important;
+}
+#nav-header {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 25px;
+}
+#sleekmonster {
+    max-width: 85px;
+}

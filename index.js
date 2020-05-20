@@ -1,9 +1,21 @@
 //
 const express = require('express')
-const db = require('./lib/db')
 
 const app = express()
-const port = 7878
+
+//serve files out of the public directory
+app.use(express.static('public'))
+
+const port = 9999
+
+app.set('view engine', 'hbs')
+
+app.get('/', function (req, res) {
+    res.render('index', { title: 'Hey', message: 'Hello there!' })
+})
+
+//const db = require('./lib/db')
+
 
 //need templating code
 
@@ -24,13 +36,13 @@ const startExpressApp = () => {
       console.log('express is listening on port ' + port)
     })
 }
+startExpressApp()
+// const bootupSequenceFailed = (err) => {
+//     console.error('Unable to connect to the database:', err)
+//     console.error('Goodbye!')
+//     process.exit(1)
+// }
 
-const bootupSequenceFailed = (err) => {
-    console.error('Unable to connect to the database:', err)
-    console.error('Goodbye!')
-    process.exit(1)
-}
-
-db.connect()
-    .then(startExpressApp)
-    .catch(bootupSequenceFailed)
+// db.connect()
+//     .then(startExpressApp)
+//     .catch(bootupSequenceFailed)
