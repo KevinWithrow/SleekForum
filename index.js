@@ -11,7 +11,7 @@ const port = 7878
 //set the template engine
 app.set('view engine', 'hbs');
 
-const dummyLists = [
+const dummyUsers = [
   {
     uuid: 'adfhhkkkkhgh',
     name: 'Kevin'
@@ -35,39 +35,67 @@ const dummyItems = [
   }
 ]
 
-app.param('listUUID', function (rec, res, nextFn, listUUID) {
+app.set('view engine', 'hbs')
+
+app.param('listUUID', function (req, res, nextFn, listUUID) {
   db.getList(listUUID)
-  .then((theList) => {
-    console.log(theList)
-    console.log('8888888888888888888')
-    req.list = theList
-    nextFn()
-  })
+    .then((theList) => {
+      req.sleekfourmdb = req.sleekfourmdb || {}
+      req.sleekfourmdb.list = theList
+      nextFn()
+    })
     .catch(() => {
       res.status(404).send('list not found')
     })
-  console.log(listUUID)
-  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-  console.log('CALLED ONLY ONCE')
-  next()
 })
 
 // the homepage shows your lists
 app.get('/', function (req, res) {
-  db.getLists()
-  .then((lists) => {
-    res.render('index', { lists: lists})
-  })
-  .catch(() => {
-    //TODO: show and error page here
-  })
- 
+  res.render('index', { title: 'Hey', message: 'Hello there!' })
+  // db.getLists()
+    // .then((lists) => {
+    //   res.render('index', { lists: lists })
+    // })
+    // .catch(() => {
+    //   // TODO: show an error page here
+    // })
 })
 
+
 //the list page shows the items in the list
-app.get('/list/:listUUID', function (req, res) {
-  res.render('list_page', { listname: 'Dummy List', items: dummyItems})
+app.get('/user/:userUUID', function (req, res) {
+  // const theList = sleekfourmdb.post
+  if (userExists(req.params.userUUID)){
+    res.render('index', { listname: 'Dummy Users', items: dummyItems})
+  } else {
+    res.status(404).send('user not found')
+  }
+
 })
+
+function userExists (userUUID){
+ const userMatches = dummyUsers.filter(function(user){
+   return user.uuid === userUUID
+ }) 
+ return userMatches.length >= 1
+}
+
+app.get('/thread:threadUUID', function (req, res) {
+  // const theList = sleekfourmdb.post
+  if (threadExists(req.params.threadUUID)){
+    res.render('index', { listname: 'Dummy Users', items: dummyItems})
+  } else {
+    res.status(404).send('thread not found')
+  }
+
+})
+
+function threadExists (threadUUID){
+ const threadMatches = dummyThread.filter(function(thread){
+   return thread.uuid === threadUUID
+ }) 
+ return threadMatches.length >= 1
+}
 
 const startExpressApp = () => {
   app.listen(port, () => {

@@ -25,38 +25,38 @@ function connect () {
         })      
     })
 }
-// const getListsQuery = `SELECT * FROM list`
+const getListsQuery = `SELECT * FROM list`
 
-// // function getLists () {
-// //     return conn.raw(getListsQuery)
-// //     .then((result) => {
-// //         return result.rows
-// //     })
-// }
+ function getLists () {
+     return conn.raw(getListsQuery)
+     .then((result) => {
+         return result.rows
+     })
+}
 
-// const getListQuery = `SELECT * FROM list WHERE uuid = ?`
+const getListQuery = `SELECT * FROM list WHERE uuid = ?`
 
-// function getList (uuid) {
-//     return conn.raw(getListQuery, [uuid])
-//     .then((result) => {
-//         if (result && result.rows && result.rows.length === 1) {
-//             return result.rows[0]
-//         } else {
-//             throw('List not found')
-//         }
-//     })
-//     .catch(() => {
-//         return "getList function query failed"
-//     })
-// }
+function getList (uuid) {
+    return conn.raw(getListQuery, [uuid])
+    .then((result) => {
+        if (result && result.rows && result.rows.length === 1) {
+            return result.rows[0]
+        } else {
+            throw('List not found')
+        }
+    })
+    .catch(() => {
+        return "getList function query failed"
+    })
+}
 
 
 //---------------------------------------
 // Public API
 
 module.exports = {
-    connect: connect
-    // getLists: getLists,
-    // getList: getList
+    connect: connect,
+    getLists: getLists,
+    getList: getList
     //----
 }
