@@ -4,7 +4,6 @@ create table thread (
     uuid text unique,
     member_id integer references member(id),
     title text unique,
-    post_count integer,
     ctime timestamptz,
     mtime timestamptz default current_timestamp
 );`
