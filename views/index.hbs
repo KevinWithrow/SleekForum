@@ -31,5 +31,13 @@
               </form>
           </nav>
       </div>
+      <div class=content>
+        <p>Here are your list of Threads:</p>
+        <ul>
+          {{#each threadArray}}
+            <li><a href="/thread/{{this.uuid}}">{{this.title}}</a></li>
+          {{/each}}
+        </ul>
+      </div>
   </body>
 </html>

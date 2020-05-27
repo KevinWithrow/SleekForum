@@ -51,12 +51,35 @@ function getList (uuid) {
 }
 
 
+const getThreadQuery = `SELECT * FROM thread`
+
+function getThreads () {
+    return conn.raw(getThreadQuery)
+    .then((result) => {
+        return result.rows
+    }) 
+}
+
+const getPostQuery = `SELECT * FROM thread WHERE uuid = ?`
+
+function getThread (threadID) {
+    console.log("getThread is running")
+    return conn.raw(getPostQuery, [threadID])
+    .then((result) => {
+        return result.rows[0]
+    }) 
+}
+
+
 //---------------------------------------
 // Public API
 
 module.exports = {
     connect: connect,
     getLists: getLists,
-    getList: getList
+    getList: getList,
+    getThreads: getThreads,
+    getThread: getThread
+
     //----
 }
