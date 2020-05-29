@@ -9,32 +9,6 @@ app.use(express.static('public'))
 const port = 7878
 
 //set the template engine
-app.set('view engine', 'hbs');
-
-const dummyUsers = [
-  {
-    uuid: 'adfhhkkkkhgh',
-    name: 'Kevin'
-  },
-  {
-    uuid: 'lhgkfgjfk',
-    name: 'Howie'
-  }
-]
-
-const dummyItems = [
-  {
-    uuid: 'adfhhkkkkhgh',
-    description: 'can I pet that dog!',
-    display_order: 1
-  },
-  {
-    uuid: 'lhgkfgjfk',
-    description: 'wash the car',
-    display_order: 2
-  }
-]
-
 app.set('view engine', 'hbs')
 
 app.param('threadUUID', function (req, res, nextFn, threadUUID) {
@@ -51,7 +25,7 @@ app.param('threadUUID', function (req, res, nextFn, threadUUID) {
 
 // the homepage shows your threads
 app.get('/', function (req, res) {
-  // res.render('index', { title: 'Hey', message: 'Hello there!' })
+  
   db.getThreads()
     .then((threadArray) => {
       res.render('index', { threadArray: threadArray })
@@ -61,51 +35,48 @@ app.get('/', function (req, res) {
     })
 })
 
-
-
-
-
 //the page shows posts of the thread
 app.get('/thread/:threadUUID', function (req, res) {
-  // db.getThread()
-  // .then(console.log("getPost is working"))
-  console.log("Thread get endpoint")
-  console.log(req.sleekfourmdb)
-  res.send("debugging")
+  db.getThisThread(req.params.threadUUID)
+    .then((postArray) => {
+      res.render('thread', {
+        postArray: postArray
+      })
+    })
+  
+})
 
-  // const theList = sleekfourmdb.post
-  // if (userExists(req.params.userUUID)){
-  //   res.render('index', { listname: 'Dummy Users', items: dummyItems})
-  // } else {
-    
+
+/*
+//the page shows posts of the thread
+app.get('/thread/:threadUUID', function (req, res) {
+  db.getThisThread(req.params.threadUUID)
+    .then(() => {
+      res.send('complete')
+    })
+    .catch(
+      res.status(500).send('Q keep trying!')
+    )
   }
-
-)
-
-function userExists (userUUID){
- const userMatches = dummyUsers.filter(function(user){
-   return user.uuid === userUUID
- }) 
- return userMatches.length >= 1
-}
-
+)*/
+/*
 app.get('/thread:threadUUID', function (req, res) {
-  // const theList = sleekfourmdb.post
   if (threadExists(req.params.threadUUID)){
     res.render('index', { listname: 'Dummy Users', items: dummyItems})
   } else {
     res.status(404).send('thread not found')
   }
-
-})
+})*/
 
 function threadExists (threadUUID){
- const threadMatches = dummyThread.filter(function(thread){
-   return thread.uuid === threadUUID
- }) 
- return threadMatches.length >= 1
-}
+  const threadMatches = dummyThread.filter(function(thread){
+    return thread.uuid === threadUUID
+  }) 
+  return threadMatches.length >= 1
+ }
 
+
+//#region Kick Off Functions
 const startExpressApp = () => {
   app.listen(port, () => {
     console.log('express is listening on port ' + port)
@@ -117,8 +88,8 @@ const bootupSequenceFailed = (err) => {
   console.error('Goodbye!')
   process.exit(1)
 }
-//global kickoff point
 
+//global kickoff point
 db.connect()
   .then(startExpressApp)
   // .then(testSomething)
@@ -132,4 +103,4 @@ db.connect()
 //     console.log(lists)
 //   })
 // }
- 
+ //#endregion

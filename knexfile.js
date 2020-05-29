@@ -6,9 +6,9 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      database: 'sleekforumdb',
-      user:     'kevinwithrow',
-      password: '123jordan'
+      database: 'stayconnected',
+      user:     'postgres',
+      password: 'postgres'
     },
     pool: {
       min: 2,
