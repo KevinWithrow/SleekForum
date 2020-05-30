@@ -1,8 +1,9 @@
 const createMemberTable = `
 create table member (
     id serial primary key,
-    uuid text,
+    muuid text,
     display_name text,
+    avatar text,
     ctime timestamptz,
     mtime timestamptz default current_timestamp
 );`

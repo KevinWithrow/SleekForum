@@ -25,7 +25,6 @@ app.param('threadUUID', function (req, res, nextFn, threadUUID) {
 
 // the homepage shows your threads
 app.get('/', function (req, res) {
-  
   db.getThreads()
     .then((threadArray) => {
       res.render('index', { threadArray: threadArray })
@@ -40,41 +39,40 @@ app.get('/thread/:threadUUID', function (req, res) {
   db.getThisThread(req.params.threadUUID)
     .then((postArray) => {
       res.render('thread', {
-        postArray: postArray
+        postArray: postArray,
+        title: postArray[0].title
       })
+    })
+    .catch(() => {
+      res.status(404).send('Thread not found')
     })
   
 })
 
-
-/*
 //the page shows posts of the thread
-app.get('/thread/:threadUUID', function (req, res) {
-  db.getThisThread(req.params.threadUUID)
-    .then(() => {
-      res.send('complete')
+app.get('/member/:memberUUID', function (req, res) {
+  db.getThisThread(req.params.memberUUID)
+    .then((memberPost) => {
+      console.log(memberPost[0].display_name)
+      res.render('member', {
+        memberPost: memberPost,
+        avatar: memberPost[0].avatar,
+        display_name: memberPost[0].display_name
+      })
     })
-    .catch(
-      res.status(500).send('Q keep trying!')
-    )
-  }
-)*/
-/*
-app.get('/thread:threadUUID', function (req, res) {
-  if (threadExists(req.params.threadUUID)){
-    res.render('index', { listname: 'Dummy Users', items: dummyItems})
-  } else {
-    res.status(404).send('thread not found')
-  }
-})*/
+    .catch(() => {
+      res.status(404).send('Member not found')
+    })
+  
+})
 
-function threadExists (threadUUID){
-  const threadMatches = dummyThread.filter(function(thread){
-    return thread.uuid === threadUUID
-  }) 
-  return threadMatches.length >= 1
- }
+app.post('/:threadUUID/newthread', function (req, res) {
+  const newThreadTitle = req.body.title
+  const newThreadContent = req.body.newThreadContent
+  const newThreadMember = req.body.member
 
+  console.log(newThreadTitle)
+})
 
 //#region Kick Off Functions
 const startExpressApp = () => {
@@ -92,15 +90,4 @@ const bootupSequenceFailed = (err) => {
 //global kickoff point
 db.connect()
   .then(startExpressApp)
-  // .then(testSomething)
   .catch(bootupSequenceFailed)
-  
-  
-// function testSomething (){
-//   db.getLists()
-//   .then((lists) => {
-//     console.log("the lists")
-//     console.log(lists)
-//   })
-// }
- //#endregion
