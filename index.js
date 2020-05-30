@@ -67,21 +67,11 @@ app.get('/member/:memberUUID', function (req, res) {
 })
 
 app.post('/:threadUUID/newthread', function (req, res) {
-  const theList = req.mr_listman.list
   const newThreadTitle = req.body.title
   const newThreadContent = req.body.newThreadContent
   const newThreadMember = req.body.member
 
-  console.log(req.body.member)
-  /*
-
-    db.createThread(theList.id, newThreadTitle, newThreadContent, newThreadMember)
-      .then(function (newItem) {
-        res.render('index', { threadArray: threadArray })
-      })
-      .catch(() => {
-        res.status(500).send('oh man, we totally messed up')
-      })*/
+  console.log(newThreadTitle)
 })
 
 //#region Kick Off Functions
@@ -100,15 +90,4 @@ const bootupSequenceFailed = (err) => {
 //global kickoff point
 db.connect()
   .then(startExpressApp)
-  // .then(testSomething)
   .catch(bootupSequenceFailed)
-  
-  
-// function testSomething (){
-//   db.getLists()
-//   .then((lists) => {
-//     console.log("the lists")
-//     console.log(lists)
-//   })
-// }
- //#endregion
