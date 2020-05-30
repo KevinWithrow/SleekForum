@@ -7,17 +7,57 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
 <body>
-    
+    <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand" href="#">
+              <div id="nav-header">
+                <img src="kidaha-07.svg" alt="sleekmonster" id="sleekmonster">
+                SleekForum
+              </div>
+              <ul id="navbar" class="nav nav-tabs">
+                <li class="nav-item">
+                <a class="nav-link active" href="#">feed!</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">profile!</a>
+                </li>
+              </ul>
+            </a>
+              <form class="form-inline my-2 my-lg-0">
+                  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Search</button>
+              </form>
+          </nav>
     <div class="content">
-        <h1>{{this.title}}</h1>
+        <div class="container">
+            <h3 class="row text-center" style="background:black; color:white;">{{this.title}}</h3>
+        </div>
         <ul>
         {{#each postArray}}
-            <li>
+            <ul>
+                <hr>
                 <div class= "container">
-                    <p class="display_name">{{this.display_name}}</p>
-                    <p>{{this.post_content}}</p>
+                    <div class="row">
+                        <div class="col-2">
+                            <div class="row">
+                                <div class="col">
+                                    <img class="img-thumbnail mx-auto d-block" src="{{this.avatar}}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <h3 class="text-center"><a href="/member/{{this.uuid}}">{{this.display_name}}</a></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-10">
+                            <div class="row">
+                                <div class="col-11">{{this.post_content}}</div>
+                                <div class="col-1">{{this.thread_count}}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </li>
+            </ul>
         {{/each}}
     </ul>
     <div class="form-group">

@@ -27,18 +27,11 @@ function connect () {
 }
 
 //Grab All Threads SQL Query
-const getThreadQuery = `SELECT * FROM thread`
-
-function confirmExistence (uuid) {
-    return conn.raw(getPostQuery,[uuid])
-    .then((result) => {
-        const match = result.rows
-        const threadMatches = match.filter(function(thread){
-            return thread.uuid = uuid
-        })
-        return threadMatches >= 1
-    })
-}
+const getThreadQuery = `select t.uuid, t.title, m.display_name, m.avatar, t.ctime, t.post_count, m.muuid
+from thread as t
+left join member as m
+on t.member_id = m.id
+order by t.ctime desc;`
 
 //Returns all threads from promise
 function getThreads () {
@@ -57,19 +50,35 @@ function getThread (threadID) {
     }) 
 }
 
-const getThisThreadQuery = `select p.post_content, p.member_id, p.thread_id, m.display_name, t.title, t.uuid
+const getThisThreadQuery = `select t.title, m.display_name, m.avatar, p.id, p.ctime, p.post_content, p.thread_count, m.muuid
 from post as p
 left join member as m
 on p.member_id = m.id
 left join thread as t
 on p.thread_id = t.id
-where t.uuid = ?;`
+where t.uuid = ?
+order by t.ctime;`
 
 function getThisThread (uuid) {
     return conn.raw(getThisThreadQuery, [uuid])
     .then((result) => {
         return result.rows
     }) 
+}
+const getMemberPostQuery = `select t.title, m.display_name, m.avatar, p.id, p.ctime, p.post_content, p.thread_count, m.muuid
+from post as p
+left join member as m
+on p.member_id = m.id
+left join thread as t
+on p.thread_id = t.id
+where m.uuid = ?
+order by t.ctime;`
+
+function getMemberPost (uuid) {
+    return conn.raw(getMemberPostQuery, [uuid])
+    .then((result) => {
+        return result.rows
+    })
 }
 
 //#region Create Tools
@@ -97,7 +106,7 @@ function getLastItem (last) {
 
 
 const createMemberQuery = `INSERT INTO member (id, uuid, display_name, ctime, mtime)
-values (?, ?, ?, current_timestamp, current_timestamp)`
+values (?, ?, ?, current_timestamp, current_timestamp);`
 
 function createMember (display_name) {
       return conn.raw(createMemberQuery, [getLastItem(getLastMember), uuid(), display_name])
@@ -106,35 +115,34 @@ function createMember (display_name) {
     })
 }
 
-const createThreadQuery = `INSERT INTO thread (id, uuid, member_id, title, ctime, mtime)
-values (?, ?, ?, ?, current_timestamp, current_timestamp)`
 
-function createThread (member_id, title) {
-      return conn.raw(createThreadQuery, [getLastItem(getLastThread), uuid(), member_id, title])
+const createThreadQuery = `INSERT INTO thread (id, uuid, member_id, title, ctime, mtime)
+values (?, ?, ?, ?, current_timestamp, current_timestamp);`
+
+function createThread (title, content, member_id) {
+    return conn.raw(createThreadQuery, [getLastItem(getLastThread), uuid(), member_id, title, ])
     .then((result) => {
       return result.rows[0]
     })
 }
 
-const createPostQuery = `INSERT INTO post (id, uuid, member_id, thread_id, post_content, ctime, mtime)
-values (?, ?, ?, ?, ?, current_timestamp, current_timestamp)`
+const createPostQuery = `INSERT INTO post (id, uuid, member_id, thread_id, post_content, thread_count, ctime, mtime)
+values (?, ?, ?, ?, ?, 1, current_timestamp, current_timestamp);`
 
 function createPost (member_id, thread_id, post_content) {
-      return conn.raw(createPostQuery, [getLastItem(getLastPost), uuid(), member_id, thread_id, post_content])
+    return conn.raw(createPostQuery, [getLastItem(getLastPost), uuid(), member_id, post_content, thread_id])
     .then((result) => {
       return result.rows[0]
     })
 }
-//#endregion 
 
-//---------------------------------------
-// Public API
 
 module.exports = {
     connect: connect,
     getThreads: getThreads,
     getThread: getThread,
     getThisThread: getThisThread,
+    getMemberPost: getMemberPost,
     createMember: createMember,
     createThread: createThread,
     createPost: createPost,

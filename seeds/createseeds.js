@@ -14,32 +14,57 @@ const fakePost = []
 
 //#region Create Operations
 //Function that will create a member(id, display_name, UUID)
-const createmember = (integer) => ({
+const createmember = (integer, getDate) => ({
   id: integer,
   display_name: faker.name.firstName(),
-  uuid: faker.random.uuid(),
+  muuid: faker.random.uuid(),
+  avatar: faker.image.avatar(),
+  ctime: getDate
 })
 //Function that will create a list of threads
-const createThread = (integer) => ({
+const createThread = (integer, member, postCount, getDate) => ({
   id: integer,
   uuid: faker.random.uuid(),
   title: faker.lorem.sentence(),
-  member_id: Math.floor(Math.random() * 50),
+  member_id: member,
+  post_count: postCount,
+  ctime: getDate
 })
 //Function that will create post in each  thread
-const createPost = (integer, sentences, member, thread) => ({
+const createPost = (integer, sentences, member, thread, getDate, threadcount) => ({
   id: integer,
   uuid: faker.random.uuid(),
   post_content: faker.lorem.sentences(sentences),
+  thread_count: threadcount,
   member_id: member,
   thread_id: thread,
+  ctime: getDate,
 })
 //#endregion
+let newtime
+let oldtime = 0
+
+function getDate (i) {
+  if(i === 0){
+    newtime = faker.date.between("2020-03-28","2020-04-28")
+  } else {
+    newtime = IncrementDate(oldtime)
+  }
+  oldtime = newtime
+  return newtime
+}
+
+function IncrementDate(date) {         
+  var tempDate = new Date(date);
+     tempDate.setDate(tempDate.getDate() + 1);
+     return tempDate;
+} 
 
 //#region  Loop operations
 //loop that will insert a new member for the member array, length 50
 for(let i = 0; i < 50; i++){
-  fakemembers.push(createmember(i))
+
+  fakemembers.push(createmember(i, getDate(i)))
 }
 
 //nested forloop that will create a thread and randomize the number of post within the thread
@@ -48,8 +73,9 @@ for(let i = 0; i < 30; i++){
   let numberOfPost = faker.random.number(30)
   // Randomizes the original poster of the thread
   let thismember = faker.random.number(50)
+  let memID
   // 
-  fakeThreads.push(createThread(i, thismember, numberOfPost))
+  fakeThreads.push(createThread(i, thismember, numberOfPost, getDate(i)))
   
   // Randomizer loop that will make sure no there are not two posted in a row
   for(let j = 0; j < numberOfPost; j++){
@@ -58,9 +84,9 @@ for(let i = 0; i < 30; i++){
     //Serialize the post number
     let p = fakePost.length
 
-    let memID
+    
     if(j===0){
-      memID = Math.floor(Math.random() * 49)
+      memID = thismember
     }else{
       memID = Math.floor(Math.random() * 49)
       while(memID === fakePost[(j-1)].member_id){
@@ -68,7 +94,7 @@ for(let i = 0; i < 30; i++){
       }
     }
     // Puts the new created post at the bottom of the post array
-    fakePost.push(createPost(p,numberOfSentences, memID, i))
+    fakePost.push(createPost(p,numberOfSentences, memID, i, getDate(j), j+1))
   }
 }
 //#endregion
