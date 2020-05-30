@@ -30,14 +30,60 @@
                   <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Search</button>
               </form>
           </nav>
-      </div>
-      <div class=content>
-        <p>Here are your list of Threads:</p>
-        <ul>
-          {{#each threadArray}}
-            <li><a href="/thread/{{this.uuid}}">{{this.title}}</a></li>
-          {{/each}}
-        </ul>
-      </div>
-  </body>
+          <div class="container">
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInRight">
+
+                <div class="p-xs">
+                    <div class="pull-left m-r-md">
+                        <i class="fa fa-globe text-navy mid-icon"></i>
+                    </div>
+                    <h2>Welcome to our forum</h2>
+                    <span>Feel free to choose topic you're interested in.</span>
+                </div>
+
+            <div class="ibox-content forum-container">
+
+                <div class="forum-title">
+                    <h3>General subjects</h3>
+                </div>
+
+                <div class="forum-item active">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="forum-icon">
+                                <i class="fa fa-shield"></i>
+                            </div>
+                             <div class=content>
+                                  <ul>
+                                    {{#each threadArray}}
+                                      <li><a class="shadow-sm p-7 mb-7 bg-white rounded" class="container" href="/thread/{{this.uuid}}">{{this.title}}</a></li>
+                                    {{/each}}
+                                  </ul>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="forum-item">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="forum-icon">
+                                <i class="fa fa-bolt"></i>
+                            </div>
+                            <a href="forum_post.html" class="forum-item-title">Introductions</a>
+                            <div class="forum-sub-title">New to the community? Please stop by, say hi and tell us a bit about yourself. </div>
+                        </div>
+                        </div>
+                        <div class="col-md-1 forum-info">
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 </html>
