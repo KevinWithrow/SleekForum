@@ -9,71 +9,61 @@
   </head>
   <body>
       <div>
-          <nav class="navbar navbar-light bg-light">
-            <a class="navbar-brand" href="#">
+          <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#/">
               <div id="nav-header">
                 <img src="kidaha-07.svg" alt="sleekmonster" id="sleekmonster">
-                SleekForum
+                BCM2020
               </div>
-              <ul id="navbar" class="nav nav-tabs">
-                <li class="nav-item">
-                <a class="nav-link active" href="#">feed!</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">profile!</a>
-                </li>
-              </ul>
             </a>
-              <form class="form-inline my-2 my-lg-0">
-                  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Search</button>
-              </form>
           </nav>
+
+          <div class="row justify-content-center">
+            <a class="p-2 text-muted" href="#">World</a>
+            <a class="p-2 text-muted" href="#">U.S.</a>
+            <a class="p-2 text-muted" href="#">Technology</a>
+            <a class="p-2 text-muted" href="#">Design</a>
+            <a class="p-2 text-muted" href="#">Culture</a>
+            <a class="p-2 text-muted" href="#">Business</a>
+            <a class="p-2 text-muted" href="#">Politics</a>
+            <a class="p-2 text-muted" href="#">Opinion</a>
+            <a class="p-2 text-muted" href="#">Science</a>
+            <a class="p-2 text-muted" href="#">Health</a>
+            <a class="p-2 text-muted" href="#">Style</a>
+            <a class="p-2 text-muted" href="#">Travel</a>
+        </div>
+          
           <div class="container">
-<div class="row">
-    <div class="col-lg-12">
-        <div class="wrapper wrapper-content animated fadeInRight">
-
-                <div class="p-xs">
-                    <div class="pull-left m-r-md">
-                        <i class="fa fa-globe text-navy mid-icon"></i>
+            <div class="card text-white col justify-content-center">
+                <div class="row">
+                    <div class="col">
+                        <img src="https://vignette1.wikia.nocookie.net/simpsons/images/0/0f/The_simpsons.png/revision/latest/scale-to-width-down/2000?cb=20170620051851" class="card-img" alt="..." style="filter: brightness(50%);">
                     </div>
-                    <h2>Welcome to our forum</h2>
-                    <span>Feel free to choose topic you're interested in.</span>
                 </div>
-
-            <div class="ibox-content forum-container">
-
-                <div class="forum-title">
-                    <h3>General subjects</h3>
+                <div class="card-img-overlay text-center">
+                    <h1 class="card-title font-weight-bold">Bwahoo! Comment Moderator 2020</h2>
+                    <p class="card-text font-weight-bold">Welcome to BCM2020! The online job where you get paid PENNIES to moderate people yelling at each other!</p>
+                    <p class="card-text font-weight-bold">Good Luck, sanity not included!</p>
                 </div>
+            </div>
+          </div>
 
-                <div class="forum-item active">
-                    <div class="row">
-                        <div class="col-md-9">
+
+            <div class="forum-item active">
+                    <div class="row justify-content-center">
+                        <div class="col-md-7">
+                          <h1 class="text-center">Here are your assignments for today</h1>
+          <p class="lead text-center">Please review the comments in each thread below.<br> Feel free to delete or flag comments as you see fit.</p>
                             <div class="forum-icon">
                                 <i class="fa fa-shield"></i>
                             </div>
                              <div class=content>
                                   <ul>
-                                    {{#each threadArray}}
+                                    {{#each threadUUID}}
                                         <ul><hr>
-                                        <div class=container>
+                                        <div class="container list-group-item list-group-item-action">
                                             <div class="row">
-                                                <div class="col-2"><img class="img-thumbnail" src="{{this.avatar}}"></div>
-                                                <div class="col">
-                                                    <a class="shadow-sm p-7 mb-7 bg-white rounded" class="container" href="/thread/{{this.uuid}}">{{this.title}}</a>
-                                                    <div class="row justify-content-between">
-                                                        <div class="col">
-                                                            <a href="/member/{{this.uuid}}">{{this.display_name}}</a>
-                                                        </div>
-                                                        <div class="col">{{this.ctime}}</div>
-                                                        <div class="col">
-                                                            Post Count: 
-                                                            {{this.post_count}}
-                                                            </div>
-                                                    </div>
-                                                </div>
+                                                <a href="/thread/{{this.thread_id}}">{{this.content}}</a>
                                             </div>
                                         </div>
                                         </ul>
@@ -83,29 +73,11 @@
                         </div>
                     </div>
                 </div>
-                <hr>
-                <form action="/added" method="POST">
-                    <fieldset>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-4">
-                                    <input class="form-control" type="text" name="pickme" placeholder="Go Quincy">
-                                </div>
-                                <div class="col">
-                                    <button type="submit" class="btn btn-primary">Add Item</button>
-                                </div>
-                                <div class="col">
-                                    hmmmmmm
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
+                
+
+
+
         </div>
-    </div>
-</div>
-</div>
 </body> 
 </html>
 

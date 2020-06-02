@@ -5,6 +5,11 @@ const faker = require('faker')
 //this will hold our database connection
 let conn = null
 
+function uuid() {
+    const uuid = faker.random.uuid()
+    return uuid
+}
+
 //this should return a promise
 function connect () {
     return new Promise(function (resolve, reject) {
@@ -28,17 +33,31 @@ function connect () {
 }
 
 //Grab All Threads SQL Query
-const getThreadQuery = `select uuid from thread;`
+const getThreadQuery = `select distinct (thread_id) from post;`
+
+const threads = []
+const theadArray = (uuid) => ({
+    content: faker.lorem.sentence(),
+    thread_id: uuid
+  })
+
 
 //Returns all threads from promise
 function getThreads () {
     return conn.raw(getThreadQuery)
     .then((result) => {
-        return result.rows
+        result.rows.forEach(element => {
+            threads.push(theadArray(element.thread_id))
+        })
+        console.log(threads)
+        return threads
     }) 
+    .catch((err) => {
+        console.log(err)
+    })
 }
 
-const getPostQuery = `SELECT * FROM thread WHERE uuid = ?`
+const getPostQuery = `SELECT * FROM post WHERE thread_id = ? order by id`
 
 function getThread (threadID) {
     return conn.raw(getPostQuery, [threadID])
@@ -47,102 +66,107 @@ function getThread (threadID) {
     }) 
 }
 
-const getThisThreadQuery = `select t.title, m.display_name, m.avatar, p.id, p.ctime, p.post_content, p.thread_count, m.muuid
-from post as p
-left join member as m
-on p.member_id = m.id
-left join thread as t
-on p.thread_id = t.id
-where t.uuid = ?
-order by t.ctime;`
-
 function getThisThread (uuid) {
-    return conn.raw(getThisThreadQuery, [uuid])
+    return conn.raw(getPostQuery, [uuid])
     .then((result) => {
+        console.log(result.rows)
         return result.rows
-    }) 
-}
-const getMemberPostQuery = `select t.title, m.display_name, m.avatar, p.id, p.ctime, p.post_content, p.thread_count, m.muuid
-from post as p
-left join member as m
-on p.member_id = m.id
-left join thread as t
-on p.thread_id = t.id
-where m.uuid = ?
-order by t.ctime;`
-
-function getMemberPost (uuid) {
-    return conn.raw(getMemberPostQuery, [uuid])
-    .then((result) => {
-        return result.rows
-    })
-}
-
-//#region Create Tools
-
-const getLastMember = `    SELECT id FROM member
-                        ORDER BY id DESC
-                        LIMIT 1;`                        
-
-const getLastThread = `
-                        SELECT id FROM thread
-                        ORDER BY id DESC
-                        LIMIT 1;`
-
-const getLastPost = `
-                        SELECT id FROM post
-                        ORDER BY id DESC
-                        LIMIT 1;`
-
-function getLastItem (last) {
-    return conn.raw(last)
-    .then((result) => {
-        console.log(result.rows[0].id)
-        return result.rows[0].id
-    })
-}
-
-
-const createMemberQuery = `INSERT INTO member (id, uuid, display_name, ctime, mtime)
-values (?, ?, ?, current_timestamp, current_timestamp);`
-
-function createMember (display_name) {
-      return conn.raw(createMemberQuery, [getLastItem(getLastMember), uuid(), display_name])
-    .then((result) => {
-      return result.rows[0]
-    })
-}
-
-function uuid() {
-    const uuid = faker.random.uuid()
-    return uuid
-}
-
-const createThreadQuery = `INSERT INTO thread (id, uuid, member_id, title, ctime, mtime)
-values (?, ?, ?, ?, current_timestamp, current_timestamp);`
-
-function createThread (title, member_id) {
-    console.log(getLastItem(getLastThread) + ' last thread')
-    console.log(uuid() + ' uuid')
-    console.log(member_id + ' member id')
-    console.log(title + ' title')
-    return conn.raw(createThreadQuery, [getLastItem(getLastThread), uuid(), parseInt(member_id), title])
-    .then((result) => {
-      return result.rows[0]
     })
     .catch((err) => {
         console.log(err)
     })
 }
 
-const createPostQuery = `INSERT INTO post (id, uuid, member_id, thread_id, post_content, thread_count, ctime, mtime)
-values (?, ?, ?, ?, ?, 1, current_timestamp, current_timestamp);`
+const getrows = `SELECT COUNT(*) FROM post;`
 
-function createPost (member_id, thread_id, post_content) {
-    return conn.raw(createPostQuery, [getLastItem(getLastPost), uuid(), member_id, post_content, thread_id])
-    .then((result) => {
-      return result.rows[0]
-    })
+const createNameQuery = `insert into post (id, uuid, member_id, thread_id, post_content, display_name, avatar, ctime, mtime)
+values (?, ?, ?, ?, ?, 'Mod', 'https://upload.wikimedia.org/wikipedia/en/thumb/2/2b/MOD_Pizza_logo.svg/1200px-MOD_Pizza_logo.svg.png', current_timestamp,current_timestamp);`
+function createPost (threaduuid, post_content) {
+    let june = threaduuid
+    let july = post_content
+    return conn.raw(getrows)
+        .then((result) => {
+            return result.rows[0].count
+        })
+        .then((result) => {
+            conn.raw(createNameQuery, [result+1, uuid(), 99, june, july])
+            .then((result) => {
+                return result.rows
+            })
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+}
+
+const getThready = `select thread_id from post where uuid = ?;`
+const deleteQuery = `delete from post where uuid = ?;`
+function deleteThis (uuid) {
+    let ogthread
+    return conn.raw(getThready, [uuid])
+        .then((result) => {
+            ogthread = result.rows[0].thread_id
+            return result.rows[0].thread_id
+        })
+        .then((result) => {
+            conn.raw(deleteQuery, [uuid])
+            return keepDelete(result, uuid)
+        })
+        .catch((err) => {
+            console.log('Deletion Failure')
+            console.log(err)
+        })
+}
+
+function keepDelete (oguuid, uuid) {
+    return conn.raw(deleteQuery, [uuid])
+        .then(() => {
+            console.log('Deletion Successful')
+            return oguuid
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+}
+
+const getContentQuery = `select post_content from post where uuid = ?;`
+const updateThisQuery = `update post set post_content = ? where uuid = ?;`
+function updatePost (uuid) {
+    let muuid = uuid
+    let oguuid
+    let newMessage = '\n\n\n\nYou have been giving a warning further violations could result in a ban.'
+    return conn.raw(getContentQuery, [uuid])
+        .then((result) => {
+            return newMessage = result.rows[0].post_content+newMessage
+        })
+        .then(() => {
+            oguuid = getUUID(muuid)
+            return oguuid
+        })
+        .then(() => {
+            updateThis(newMessage, muuid)
+            return oguuid
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+}
+
+function getUUID (uuid) {
+    return conn.raw(getThready, [uuid])
+        .then((result) => {
+            return result.rows[0]
+        })
+}
+
+function updateThis (newPost, uuid) {
+    return conn.raw(updateThisQuery, [newPost, uuid])
+        .then(() => {
+            return uuid
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
 }
 
 
@@ -151,8 +175,7 @@ module.exports = {
     getThreads: getThreads,
     getThread: getThread,
     getThisThread: getThisThread,
-    getMemberPost: getMemberPost,
-    createMember: createMember,
-    createThread: createThread,
     createPost: createPost,
+    deleteThis: deleteThis,
+    updatePost: updatePost
 }

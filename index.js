@@ -12,23 +12,13 @@ const port = 7878
 //set the template engine
 app.set('view engine', 'hbs')
 
-app.param('threadUUID', function (req, res, nextFn, threadUUID) {
-  db.getThread(threadUUID)
-    .then((thePost) => {
-      req.sleekfourmdb = req.sleekfourmdb || {}
-      req.sleekfourmdb.thePost = thePost
-      nextFn()
-    })
-    .catch(() => {
-      res.status(404).send('Post not found')
-    })
-})
-
 // the homepage shows your threads
 app.get('/', function (req, res) {
   db.getThreads()
     .then((threadUUID) => {
-      res.render('index', { threadUUID: threadUUID.uuid })
+      res.render('index', { 
+        threadUUID: threadUUID,
+       })
     })
     .catch(() => {
       res.status(500).send('oops my bad!')
@@ -37,11 +27,12 @@ app.get('/', function (req, res) {
 
 //the page shows posts of the thread
 app.get('/thread/:threadUUID', function (req, res) {
+  const muuid = req.params.threadUUID
   db.getThisThread(req.params.threadUUID)
     .then((postArray) => {
       res.render('thread', {
         postArray: postArray,
-        title: postArray[0].title
+        muuid: muuid,
       })
     })
     .catch(() => {
@@ -67,15 +58,42 @@ app.get('/member/:memberUUID', function (req, res) {
   
 })
 
-app.post('/added', function (req, res) {
-  const newname = req.body.pickme
-  console.log('newname ' + newname)
-  db.createThread(newname, 11)
-    .then(function (newItem) {
-      res.render('added')
+app.post('/thread/:threadUUID/added', function (req, res) {
+  const muuid = req.params.threadUUID
+  db.createPost(muuid, req.body.content)
+    .then(function () {
+      res.render('added', {uuid: muuid})
     })
     .catch(() => {
       res.status(404).send('Iono fam')
+    })
+})
+
+app.get('/thread/:uuid/deleted', function (req, res) {
+  let deleteuuid = req.params.uuid
+  db.deleteThis(deleteuuid)
+    .then((result) => {
+      res.render('deleted',{
+        result: result
+      })
+    })
+    .catch((err) => {
+      console.log(err)
+      res.status(404).send('Delete no go?')
+    })
+})
+
+app.get('/thread/:uuid/modify', function (req, res) {
+  db.updatePost(req.params.uuid)
+    .then(function (result) {
+      let hype = result.thread_id
+      res.render('modify', {
+        hype: hype
+      })
+    })
+    .catch((err) => {
+      console.log(err)
+      res.status(404).send('Modify no worky')
     })
 })
 
