@@ -1,5 +1,6 @@
 const knexLib = require('knex')
 const dbCfg = require('../knexfile')
+const faker = require('faker')
 
 //this will hold our database connection
 let conn = null
@@ -27,11 +28,7 @@ function connect () {
 }
 
 //Grab All Threads SQL Query
-const getThreadQuery = `select t.uuid, t.title, m.display_name, m.avatar, t.ctime, t.post_count, m.muuid
-from thread as t
-left join member as m
-on t.member_id = m.id
-order by t.ctime desc;`
+const getThreadQuery = `select uuid from thread;`
 
 //Returns all threads from promise
 function getThreads () {
@@ -100,7 +97,8 @@ const getLastPost = `
 function getLastItem (last) {
     return conn.raw(last)
     .then((result) => {
-        return result.rows[0]
+        console.log(result.rows[0].id)
+        return result.rows[0].id
     })
 }
 
@@ -115,14 +113,25 @@ function createMember (display_name) {
     })
 }
 
+function uuid() {
+    const uuid = faker.random.uuid()
+    return uuid
+}
 
 const createThreadQuery = `INSERT INTO thread (id, uuid, member_id, title, ctime, mtime)
 values (?, ?, ?, ?, current_timestamp, current_timestamp);`
 
-function createThread (title, content, member_id) {
-    return conn.raw(createThreadQuery, [getLastItem(getLastThread), uuid(), member_id, title, ])
+function createThread (title, member_id) {
+    console.log(getLastItem(getLastThread) + ' last thread')
+    console.log(uuid() + ' uuid')
+    console.log(member_id + ' member id')
+    console.log(title + ' title')
+    return conn.raw(createThreadQuery, [getLastItem(getLastThread), uuid(), parseInt(member_id), title])
     .then((result) => {
       return result.rows[0]
+    })
+    .catch((err) => {
+        console.log(err)
     })
 }
 

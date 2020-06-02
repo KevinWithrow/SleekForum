@@ -56,63 +56,57 @@
                             </div>
                              <div class=content>
                                   <ul>
-                {{#each threadArray}}
-                    <ul><hr>
-                    <div class=container>
-                        <div class="row">
-                            <div class="col-2"><img class="img-thumbnail" src="{{this.avatar}}"></div>
-                            <div class="col">
-                                <a class="shadow-sm p-7 mb-7 bg-white rounded" class="container" href="/thread/{{this.uuid}}">{{this.title}}</a>
-                                <div class="row justify-content-between">
-                                    <div class="col">
-                                        <a href="/member/{{this.uuid}}">{{this.display_name}}</a>
-                                    </div>
-                                    <div class="col">{{this.ctime}}</div>
-                                    <div class="col">
-                                        Post Count: 
-                                        {{this.post_count}}
+                                    {{#each threadArray}}
+                                        <ul><hr>
+                                        <div class=container>
+                                            <div class="row">
+                                                <div class="col-2"><img class="img-thumbnail" src="{{this.avatar}}"></div>
+                                                <div class="col">
+                                                    <a class="shadow-sm p-7 mb-7 bg-white rounded" class="container" href="/thread/{{this.uuid}}">{{this.title}}</a>
+                                                    <div class="row justify-content-between">
+                                                        <div class="col">
+                                                            <a href="/member/{{this.uuid}}">{{this.display_name}}</a>
+                                                        </div>
+                                                        <div class="col">{{this.ctime}}</div>
+                                                        <div class="col">
+                                                            Post Count: 
+                                                            {{this.post_count}}
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </ul>
-                {{/each}}
-                </ul>
+                                        </ul>
+                                    {{/each}}
+                                    </ul>
                                 </div>
                         </div>
                     </div>
                 </div>
                 <hr>
-                <div class="forum">
-                    <div class="row">
-                        <div class="col-md-9">
+                <form action="/added" method="POST">
+                    <fieldset>
+                        <div class="container">
                             <div class="row">
-                                <div class="col-">Create Thread</p></div>
-                            </div>
-                            <div class="row form-group" action="/{{uuid}}/newthread" method="POST">
-                                <div class="col-6">
-                                    <input class="form-control" type="text" id="member" placeholder="Your Name">
+                                <div class="col-4">
+                                    <input class="form-control" type="text" name="pickme" placeholder="Go Quincy">
                                 </div>
-                                <div class="col-2">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                <div class="col">
+                                    <button type="submit" class="btn btn-primary">Add Item</button>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" type="text" id="title" placeholder="Thread Title">
-                                <textarea class="form-control" id="post" rows="3">Content</textarea>
+                                <div class="col">
+                                    hmmmmmm
+                                </div>
                             </div>
                         </div>
-                        </div>
-                    </div>
-                </div>
-                </div>
-
+                    </fieldset>
+                </form>
             </div>
         </div>
     </div>
 </div>
 </div>
+</body> 
 </html>
 
     © 2020 GitHub, Inc.

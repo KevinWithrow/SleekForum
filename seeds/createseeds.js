@@ -25,17 +25,13 @@ const createmember = (integer, getDate) => ({
 const createThread = (integer, member, postCount, getDate) => ({
   id: integer,
   uuid: faker.random.uuid(),
-  title: faker.lorem.sentence(),
-  member_id: member,
-  post_count: postCount,
   ctime: getDate
 })
 //Function that will create post in each  thread
-const createPost = (integer, sentences, member, thread, getDate, threadcount) => ({
+const createPost = (integer, sentences, member, thread, getDate) => ({
   id: integer,
   uuid: faker.random.uuid(),
   post_content: faker.lorem.sentences(sentences),
-  thread_count: threadcount,
   member_id: member,
   thread_id: thread,
   ctime: getDate,
@@ -63,12 +59,11 @@ function IncrementDate(date) {
 //#region  Loop operations
 //loop that will insert a new member for the member array, length 50
 for(let i = 0; i < 50; i++){
-
   fakemembers.push(createmember(i, getDate(i)))
 }
 
 //nested forloop that will create a thread and randomize the number of post within the thread
-for(let i = 0; i < 30; i++){
+for(let i = 0; i < 6; i++){
   // Randomizes the number of post in a thread iwth a max of 30
   let numberOfPost = faker.random.number(30)
   // Randomizes the original poster of the thread
@@ -80,7 +75,7 @@ for(let i = 0; i < 30; i++){
   // Randomizer loop that will make sure no there are not two posted in a row
   for(let j = 0; j < numberOfPost; j++){
     //Randomizes the number of sentences each post will have
-    let numberOfSentences = faker.random.number(4) + 1
+    let numberOfSentences = faker.random.number(6) + 1
     //Serialize the post number
     let p = fakePost.length
 

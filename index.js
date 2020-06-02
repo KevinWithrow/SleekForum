@@ -5,6 +5,7 @@ const app = express()
 
 //serve files out of the public directory
 app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true }))
 
 const port = 7878
 
@@ -26,8 +27,8 @@ app.param('threadUUID', function (req, res, nextFn, threadUUID) {
 // the homepage shows your threads
 app.get('/', function (req, res) {
   db.getThreads()
-    .then((threadArray) => {
-      res.render('index', { threadArray: threadArray })
+    .then((threadUUID) => {
+      res.render('index', { threadUUID: threadUUID.uuid })
     })
     .catch(() => {
       res.status(500).send('oops my bad!')
@@ -66,12 +67,16 @@ app.get('/member/:memberUUID', function (req, res) {
   
 })
 
-app.post('/:threadUUID/newthread', function (req, res) {
-  const newThreadTitle = req.body.title
-  const newThreadContent = req.body.newThreadContent
-  const newThreadMember = req.body.member
-
-  console.log(newThreadTitle)
+app.post('/added', function (req, res) {
+  const newname = req.body.pickme
+  console.log('newname ' + newname)
+  db.createThread(newname, 11)
+    .then(function (newItem) {
+      res.render('added')
+    })
+    .catch(() => {
+      res.status(404).send('Iono fam')
+    })
 })
 
 //#region Kick Off Functions
