@@ -1,7 +1,7 @@
 const createPostTable = `
 create table post (
-  id serial primary key,
-  uuid text unique,
+  id integer primary key,
+  uuid text,
   member_id integer references member(id),
   thread_id integer references thread(id),
   post_content text,

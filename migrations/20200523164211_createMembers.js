@@ -1,6 +1,6 @@
 const createMemberTable = `
 create table member (
-    id serial primary key,
+    id integer primary key,
     muuid text,
     display_name text,
     avatar text,
