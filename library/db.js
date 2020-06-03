@@ -134,7 +134,7 @@ const updateThisQuery = `update post set post_content = ? where uuid = ?;`
 function updatePost (uuid) {
     let muuid = uuid
     let oguuid
-    let newMessage = '\n\n\n\nYou have been giving a warning further violations could result in a ban.'
+    let newMessage = '<p style="color:red;">You have been given a warning further violations could result in a ban.</p>'
     return conn.raw(getContentQuery, [uuid])
         .then((result) => {
             return newMessage = result.rows[0].post_content+newMessage
@@ -151,6 +151,7 @@ function updatePost (uuid) {
             console.log(err)
         })
 }
+
 
 function getUUID (uuid) {
     return conn.raw(getThready, [uuid])

@@ -40,4 +40,27 @@
     a.forum-item-title:hover {
       color: inherit;
     }
-  
+
+  .card-title {
+    font-size: 60px;
+    padding-top: 75px;
+  }
+  .card-text {
+    font-size: 20px;
+    padding: 25px;
+  }
+  .sanity {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: larger;
+  }
+  .myStyle {
+    color: red;
+  }
+
+  .card-img-overlay {
+  border: none;
+  }
+  .buttonBorder{
+    border: 5px;
+    border-color: black;
+  }
