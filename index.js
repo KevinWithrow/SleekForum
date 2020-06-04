@@ -41,23 +41,6 @@ app.get('/thread/:threadUUID', function (req, res) {
   
 })
 
-//the page shows posts of the thread
-app.get('/member/:memberUUID', function (req, res) {
-  db.getThisThread(req.params.memberUUID)
-    .then((memberPost) => {
-      console.log(memberPost[0].display_name)
-      res.render('member', {
-        memberPost: memberPost,
-        avatar: memberPost[0].avatar,
-        display_name: memberPost[0].display_name
-      })
-    })
-    .catch(() => {
-      res.status(404).send('Member not found')
-    })
-  
-})
-
 app.post('/thread/:threadUUID/added', function (req, res) {
   const muuid = req.params.threadUUID
   db.createPost(muuid, req.body.content)

@@ -36,9 +36,12 @@ function connect () {
 const getThreadQuery = `select distinct (thread_id) from post;`
 
 const threads = []
-const theadArray = (uuid) => ({
-    content: faker.lorem.sentence(),
-    thread_id: uuid
+let source = false
+const threadArray = (uuid) => ({
+    title: faker.lorem.sentence(),
+    thread_id: uuid,
+    avatar: faker.image.city(),
+    content: faker.lorem.sentences(faker.random.number(5)+1)
   })
 
 
@@ -46,11 +49,27 @@ const theadArray = (uuid) => ({
 function getThreads () {
     return conn.raw(getThreadQuery)
     .then((result) => {
-        result.rows.forEach(element => {
-            threads.push(theadArray(element.thread_id))
-        })
-        console.log(threads)
-        return threads
+        if(source === false){
+            result.rows.forEach(element => {
+                threads.push(threadArray(element.thread_id))
+            })
+
+            for(let i = 0; i < threads.length; i++){
+                switch(i){
+                    case 0: threads[i].avatar = faker.image.city(); break;
+                    case 1: threads[i].avatar = faker.image.food(); break;
+                    case 2: threads[i].avatar = faker.image.sports(); break;
+                    case 3: threads[i].avatar = faker.image.nightlife(); break;
+                    case 4: threads[i].avatar = faker.image.abstract(); break;
+                    case 5: threads[i].avatar = faker.image.animals(); break;
+                }
+            }
+            source = true;
+            return threads
+        } else{
+            return threads
+        }
+        
     }) 
     .catch((err) => {
         console.log(err)
@@ -69,7 +88,6 @@ function getThread (threadID) {
 function getThisThread (uuid) {
     return conn.raw(getPostQuery, [uuid])
     .then((result) => {
-        console.log(result.rows)
         return result.rows
     })
     .catch((err) => {
