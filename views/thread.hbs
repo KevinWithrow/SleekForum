@@ -81,12 +81,7 @@
           <li><a href="#">October 2013</a></li>
           <li><a href="#">September 2013</a></li>
           <li><a href="#">August 2013</a></li>
-          <li><a href="#">July 2013</a></li>
-          <li><a href="#">June 2013</a></li>
-          <li><a href="#">May 2013</a></li>
-          <li><a href="#">April 2013</a></li>
-        </ol>
-      </div>
+        console.log(result.rows)
 
       <div class="p-4">
         <h4 class="font-italic">Elsewhere</h4>
@@ -106,13 +101,14 @@
         <ul>
         {{#each postArray}}
             <ul>
-                <div class= "container list-group-item list-group-item-action">
+                <div class= "container list-group-item list-group-item-action" id="myDIV">
                     <div class="row">
                         <div class="col-2">
                             <div class="row">
                                 <div class="col">
                                     <img class="img-thumbnail mx-auto d-block" src="{{this.avatar}}">
-                                </div>
+                                </div>$.document.onrea
+
                             </div>
                             <div class="row">
                                 <div class="col">
@@ -123,6 +119,7 @@
                         <div class="col-10">
                             <div class="row">
                                 <div class="col-10">{{this.post_content}}</div>
+                                 <button onclick="myFunction()">Click me</button> 
                                 <div class="col-1"><a href="/thread/{{this.uuid}}/modify">📝</a></div>
                                 <div class="col-1"><a href="/thread/{{this.uuid}}/deleted">🗑️</a></div>
                             </div>
@@ -139,4 +136,10 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
+
+    <script>
+      function myFunction(){
+        console.log('hello');
+      }
+    </script>
 </body>

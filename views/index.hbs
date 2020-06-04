@@ -60,12 +60,15 @@
                              <div class=content>
                                   <ul>
                                     {{#each threadUUID}}
-                                        <ul><hr>
-                                        <div class="container list-group-item list-group-item-action">
-                                            <div class="row">
-                                                <a href="/thread/{{this.thread_id}}">{{this.content}}</a>
+                                        <ul>
+                                          <div class="card" style="width: 26rem;">
+                                            <img class="card-img-top" src="{{this.avatar}}" alt="Card image cap">
+                                            <div class="card-body">
+                                              <h5 class="card-title"><a href="/thread/{{this.thread_id}}">{{this.title}}</a></h5>
+                                              <p class="card-text">{{this.content}}</p>
                                             </div>
-                                        </div>
+                                          </div>
+                                          
                                         </ul>
                                     {{/each}}
                                     </ul>
