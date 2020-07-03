@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>SleekForum</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  </head>
+  <body>
+      <div>
+          <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand" href="#/">
+              <div id="nav-header">
+                <img src="kidaha-07.svg" alt="sleekmonster" id="sleekmonster">
+                SleekForum
+              </div>
+              <ul id="navbar" class="nav nav-tabs">
+                <li class="nav-item">
+                <a class="nav-link active" href="#">feed!</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">profile!</a>
+                </li>
+              </ul>
+            </a>
+            <p>New Thread added:<strong>{{description}}</strong></p>
+              {{!-- <form class="form-inline my-2 my-lg-0">
+                  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Search</button>
+              </form>
+          </nav>
+          <div class="container">
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInRight">
+
+                <div class="p-xs">
+                    <div class="pull-left m-r-md">
+                        <i class="fa fa-globe text-navy mid-icon"></i>
+                    </div>
+                    <h2>Welcome to our forum</h2>
+                    <span>Feel free to choose topic you're interested in.</span>
+                </div>
+
+            <div class="ibox-content forum-container">
+
+                <div class="forum-title">
+                    <h3>General subjects</h3>
+                </div>
+
+                <div class="forum-item active">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="forum-icon">
+                                <i class="fa fa-shield"></i>
+                            </div>
+                             <div class="content">
+                                 <form action="/index/{{threadUUID}}/new-thread" method="POST">
+                                     <fieldset>
+                                         <input type="text" name="description">`
+                                         <input type="submit" value="Add Thread">
+                                     </fieldset>
+                                 </form>
+                                  <ul>
+                {{#each threadArray}}
+                    <ul><hr>
+                    <div class=container>
+                        <div class="row">
+                            <div class="col-2"><img class="img-thumbnail" src="{{this.avatar}}"></div>
+                            <div class="col">
+                                <a class="shadow-sm p-7 mb-7 bg-white rounded" class="container" href="/thread/{{this.uuid}}">{{this.title}}</a>
+                                <div class="row justify-content-between">
+                                    <div class="col">
+                                        <a href="/member/{{this.uuid}}">{{this.display_name}}</a>
+                                    </div>
+                                    <div class="col">{{this.ctime}}</div>
+                                    <div class="col">
+                                        Post Count: 
+                                        {{this.post_count}}
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </ul>
+                {{/each}}
+                </ul>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="forum">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-">Create Thread</p></div>
+                            </div>
+                            <div class="row form-group" action="/{{uuid}}/newthread" method="POST">
+                                <div class="col-6">
+                                    <input class="form-control" type="text" id="member" placeholder="Your Name">
+                                </div>
+                                <div class="col-2">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" type="text" id="title" placeholder="Thread Title">
+                                <textarea class="form-control" id="post" rows="3">Content</textarea>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div> --}}
+</div>
+</html>
+
+    © 2020 GitHub, Inc.
+    Terms
+    Privacy
+    Security
+    Status
+    Help
