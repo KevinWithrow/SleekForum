@@ -19,7 +19,7 @@
     "faker": "4.1.0",
     "handlebars-helpers": "^0.10.0",
     "hbs": "4.1.1",
-    "knex": "0.21.1",
+    "knex": "2.4.0",
     "pg": "^8.2.1"
   },
   "devDependencies": {
